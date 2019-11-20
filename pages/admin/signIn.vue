@@ -2,7 +2,7 @@
   <v-container class="fill-height" fluid>
     <v-row align="center" justify="center">
       <v-col cols="12" sm="8" md="4">
-        <LoginFormCard />
+        <SignInFormCard />
       </v-col>
     </v-row>
   </v-container>
@@ -10,12 +10,12 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
-import LoginFormCard from '@/components/organisms/LoginFormCard'
+import SignInFormCard from '@/components/organisms/SignInFormCard'
 
 @Component({
   layout: 'simple',
-  components: { LoginFormCard }
+  components: { SignInFormCard }
 })
-export default class Password extends Vue {
+export default class SignIn extends Vue {
 }
 </script>

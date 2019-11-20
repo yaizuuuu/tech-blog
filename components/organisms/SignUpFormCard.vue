@@ -1,7 +1,7 @@
 <template>
   <HeaderAndActionsInCard>
     <template v-slot:headerText>
-      Login form
+      Sign in form
     </template>
 
     <template v-slot:cardBody>
@@ -10,7 +10,7 @@
 
     <template v-slot:actions>
       <v-btn color="primary" @click="signIn">
-        Login
+        Sign in
       </v-btn>
     </template>
   </HeaderAndActionsInCard>
@@ -29,7 +29,7 @@ import LoginForm from '@/components/molecules/LoginForm'
     LoginForm
   }
 })
-export default class LoginFormCard extends Vue {
+export default class SignInFormCard extends Vue {
   user: UserInterface = {
     userName: '',
     password: ''
@@ -45,7 +45,7 @@ export default class LoginFormCard extends Vue {
 
   /* eslint no-console: 'off' */
 
-  // TODO: newはDIで行う
+  // TODO: インスタンス化はDIで行う
   async signIn () {
     const user = new User(this.user)
 

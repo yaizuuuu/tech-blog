@@ -8,6 +8,13 @@
       type="text"
     />
     <v-text-field
+      v-if="isSignUp"
+      label="Email"
+      name="email"
+      prepend-icon="mail"
+      type="email"
+    />
+    <v-text-field
       v-model="passwordComputed"
       label="Password"
       name="password"
@@ -21,8 +28,9 @@
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator'
 
 interface signingInUser {
-  userName: string,
+  userName: string
   password: string
+  email?: string
 }
 
 const defaultUser: signingInUser = {
@@ -31,11 +39,17 @@ const defaultUser: signingInUser = {
 }
 
 @Component
-export default class LoginForm extends Vue {
+export default class SignInForm extends Vue {
   @Prop({ default: defaultUser })
   user!: signingInUser
 
   updatedUser: signingInUser = defaultUser
+
+  /* eslint no-console: 'off' */
+  get isSignUp (): boolean {
+    console.log(this.user)
+    return this.user.hasOwnProperty('email')
+  }
 
   get userNameComputed () {
     return this.user.userName
