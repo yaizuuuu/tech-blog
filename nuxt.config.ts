@@ -1,4 +1,5 @@
 // import colors from 'vuetify/es5/util/colors'
+require('dotenv').config()
 
 export default {
   mode: 'spa',
@@ -30,6 +31,10 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    {
+      src: '@/plugins/aws-amplify',
+      ssr: false
+    }
   ],
   /*
   ** Nuxt.js dev-modules
@@ -45,7 +50,8 @@ export default {
   */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    '@nuxtjs/dotenv'
   ],
   /*
   ** Axios module configuration
@@ -100,5 +106,15 @@ export default {
       eslint: true
     },
     ignoreNotFoundWarnings: true
+  },
+  srcDir: './',
+  rootDir: './',
+  env: {
+    AWS_AMPLIFY_AUTH_REGION: process.env.AWS_AMPLIFY_AUTH_REGION,
+    AWS_AMPLIFY_AUTH_USER_POOL_ID: process.env.AWS_AMPLIFY_AUTH_USER_POOL_ID,
+    AWS_AMPLIFY_AUTH_USER_POOL_WEB_CLIENT_ID: process.env.AWS_AMPLIFY_AUTH_USER_POOL_WEB_CLIENT_ID,
+    AWS_AMPLIFY_AUTH_IDENTITY_POOL_ID: process.env.AWS_AMPLIFY_AUTH_IDENTITY_POOL_ID,
+    APIGATEWAY_REGION: process.env.APIGATEWAY_REGION,
+    APIGATEWAY_ENDPOINT: process.env.APIGATEWAY_ENDPOINT
   }
 }
