@@ -1,25 +1,36 @@
 <template>
   <v-form>
     <v-text-field
+      v-if="userNameComputed !== undefined"
       v-model="userNameComputed"
       label="Username"
-      name="user-name"
+      name="username"
       prepend-icon="person"
       type="text"
     />
     <v-text-field
-      v-if="isSignUp"
+      v-if="emailComputed !== undefined"
+      v-model="emailComputed"
       label="Email"
       name="email"
       prepend-icon="mail"
       type="email"
     />
     <v-text-field
+      v-if="passwordComputed !== undefined"
       v-model="passwordComputed"
       label="Password"
       name="password"
       prepend-icon="lock"
       type="password"
+    />
+    <v-text-field
+      v-if="verificationCodeComputed !== undefined"
+      v-model="verificationCodeComputed"
+      label="Verification code"
+      name="verificationCode"
+      prepend-icon="lock"
+      type="text"
     />
   </v-form>
 </template>
@@ -27,29 +38,18 @@
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator'
 
-interface signingInUser {
-  userName: string
-  password: string
+interface AuthUser {
+  userName?: string
+  password?: string
   email?: string
-}
-
-const defaultUser: signingInUser = {
-  userName: '',
-  password: ''
+  verificationCode?: string | number
 }
 
 @Component
-export default class SignInForm extends Vue {
-  @Prop({ default: defaultUser })
-  user!: signingInUser
+export default class AuthForm extends Vue {
+  @Prop() user: AuthUser
 
-  updatedUser: signingInUser = defaultUser
-
-  /* eslint no-console: 'off' */
-  get isSignUp (): boolean {
-    console.log(this.user)
-    return this.user.hasOwnProperty('email')
-  }
+  updatedUser: AuthUser
 
   get userNameComputed () {
     return this.user.userName
@@ -57,7 +57,7 @@ export default class SignInForm extends Vue {
 
   set userNameComputed (value: string) {
     this.updateUser({
-      ...this.updatedUser,
+      ...this.user,
       userName: value
     })
   }
@@ -68,13 +68,35 @@ export default class SignInForm extends Vue {
 
   set passwordComputed (value: string) {
     this.updateUser({
-      ...this.updatedUser,
+      ...this.user,
       password: value
     })
   }
 
+  get emailComputed () {
+    return this.user.email
+  }
+
+  set emailComputed (value: string) {
+    this.updateUser({
+      ...this.user,
+      email: value
+    })
+  }
+
+  get verificationCodeComputed () {
+    return this.user.verificationCode
+  }
+
+  set verificationCodeComputed (value: string | number) {
+    this.updateUser({
+      ...this.user,
+      verificationCode: value
+    })
+  }
+
   @Emit('update:user')
-  updateUser (value: signingInUser): void {
+  updateUser (value: AuthUser): void {
     this.updatedUser = value
   }
 }
