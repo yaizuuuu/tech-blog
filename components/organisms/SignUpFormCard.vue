@@ -1,16 +1,16 @@
 <template>
   <HeaderAndActionsInCard>
     <template v-slot:headerText>
-      Sign in form
+      Sign up form
     </template>
 
     <template v-slot:cardBody>
-      <LoginForm :user.sync="userComputed" />
+      <AuthForm :user.sync="userComputed" />
     </template>
 
     <template v-slot:actions>
-      <v-btn color="primary" @click="signIn">
-        Sign in
+      <v-btn color="primary" @click="signUp">
+        Sign up
       </v-btn>
     </template>
   </HeaderAndActionsInCard>
@@ -21,17 +21,18 @@ import { Vue, Component } from 'vue-property-decorator'
 import { Auth } from 'aws-amplify'
 import { UserInterface, User } from '@/domains/User'
 import HeaderAndActionsInCard from '@/components/molecules/HeaderAndActionsInCard'
-import LoginForm from '@/components/molecules/LoginForm'
+import AuthForm from '@/components/molecules/AuthForm'
 
 @Component({
   components: {
     HeaderAndActionsInCard,
-    LoginForm
+    AuthForm
   }
 })
-export default class SignInFormCard extends Vue {
+export default class SignUpFormCard extends Vue {
   user: UserInterface = {
     userName: '',
+    email: '',
     password: ''
   }
 
@@ -46,12 +47,13 @@ export default class SignInFormCard extends Vue {
   /* eslint no-console: 'off' */
 
   // TODO: インスタンス化はDIで行う
-  async signIn () {
+  async signUp () {
     const user = new User(this.user)
 
-    await user.signIn(Auth)
+    await user.signUp(Auth)
       .then((success) => {
         console.log(success)
+        this.$router.push('/admin/signup/confirm')
       })
       .catch((fail) => {
         console.log(fail)
