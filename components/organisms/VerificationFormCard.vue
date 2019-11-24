@@ -1,7 +1,7 @@
 <template>
   <HeaderAndActionsInCard>
     <template v-slot:headerText>
-      Sign up form
+      Verification form
     </template>
 
     <template v-slot:cardBody>
@@ -9,8 +9,8 @@
     </template>
 
     <template v-slot:actions>
-      <v-btn color="primary" @click="signUp">
-        Sign up
+      <v-btn color="primary" @click="confirmSignUp">
+        Confirm
       </v-btn>
     </template>
   </HeaderAndActionsInCard>
@@ -19,7 +19,7 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 import { Auth } from 'aws-amplify'
-import { UserInterface, User } from '@/domains/User'
+import { VerificationUserInterface, User } from '@/domains/User'
 import HeaderAndActionsInCard from '@/components/molecules/HeaderAndActionsInCard'
 import AuthForm from '@/components/molecules/AuthForm'
 
@@ -30,35 +30,33 @@ import AuthForm from '@/components/molecules/AuthForm'
   }
 })
 export default class SignUpFormCard extends Vue {
-  user: UserInterface = {
+  user: VerificationUserInterface = {
     userName: '',
-    email: '',
-    password: ''
+    verificationCode: ''
   }
 
   get userComputed () {
     return this.user
   }
 
-  set userComputed (value: UserInterface) {
+  set userComputed (value: VerificationUserInterface) {
     this.user = value
   }
 
   /* eslint no-console: 'off' */
 
   // TODO: インスタンス化はDIで行う
-  async signUp () {
+  async confirmSignUp () {
     const user = new User(this.user)
 
-    await user.signUp(Auth)
+    await user.confirmSignUp(Auth)
       .then((success) => {
         console.log(success)
+        this.$router.push('/')
       })
       .catch((fail) => {
         console.log(fail)
       })
-
-    this.user.password = ''
   }
 }
 </script>
