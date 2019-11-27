@@ -9,6 +9,20 @@ export interface UserInterface {
   description?: string
   createdTimestamp?: number
   updatedTimestamp?: number
+  verificationCode?: string | number
+}
+
+export interface AuthUserInterface {
+  userName: string
+  password: string
+  attributes: {
+    email: string
+  }
+}
+
+export interface VerificationUserInterface {
+  userName: string
+  verificationCode: string | number
 }
 
 export class User implements UserInterface {
@@ -20,6 +34,20 @@ export class User implements UserInterface {
 
   async signIn (auth: AuthClass) {
     return auth.signIn(this.userName, this.password)
+  }
+
+  async signUp (auth: AuthClass) {
+    return auth.signUp({
+      username: this.userName,
+      password: this.password,
+      attributes: {
+        email: this.email
+      }
+    })
+  }
+
+  async confirmSignUp (auth: AuthClass) {
+    return auth.confirmSignUp(this.userName, this.verificationCode)
   }
 }
 
